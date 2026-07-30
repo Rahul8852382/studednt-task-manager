@@ -1,0 +1,6 @@
+{
+  "name": "Student Task Manager",
+  "description": "A beginner-friendly vanilla HTML, CSS, and JavaScript task management application with a responsive dashboard and dark mode.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

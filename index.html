@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Task Manager</title>
+  
+  <!-- Google Fonts: 'Outfit' for headings and 'Inter' for clean body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Main Application Wrapper -->
+  <div class="app-container" id="appContainer">
+    
+    <!-- 1. Header Section -->
+    <header class="app-header" id="appHeader">
+      <div class="header-logo">
+        <span class="logo-icon">🎓</span>
+        <h1>Student Task Manager</h1>
+      </div>
+      <div class="header-controls">
+        <!-- Live Calendar Date display -->
+        <div class="date-badge" id="dateBadge">Saturday, July 18, 2026</div>
+        <!-- Dark Mode Toggle Button -->
+        <button id="themeToggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle dark mode">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Smart Greeting Card Section -->
+    <section class="card greeting-card" id="greetingCard">
+      <div class="greeting-main">
+        <div class="greeting-header-group">
+          <span class="greeting-badge" id="greetingBadge">🌅</span>
+          <h2 class="greeting-title" id="greetingTitle">Good Morning!</h2>
+        </div>
+        
+        <!-- Profile Name Display/Edit Area -->
+        <div class="profile-area">
+          <div id="profileDisplayGroup" class="profile-display">
+            <span id="profileWelcomeText" class="profile-welcome">Ready to achieve your goals?</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Motivational Quote Box -->
+      <div class="motivational-card" id="motivationalCard">
+        <div class="motivation-icon-badge" id="motivationIcon">🌱</div>
+        <div class="motivation-content">
+          <h3 id="motivationTitle" class="motivation-title">Fresh Start</h3>
+          <p id="motivationDesc" class="motivation-desc">Complete your first task and build today's momentum.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Main Workspace Layout -->
+    <main class="app-main">
+      
+      <!-- Left Panel: Dashboard & Form -->
+      <aside class="sidebar-panel">
+        
+        <!-- Dashboard Card: Key Metrics and Progress Bar -->
+        <section class="card dashboard-card" id="dashboardCard">
+          <h2>Dashboard</h2>
+          
+          <div class="stats-grid">
+            <div class="stat-box total">
+              <span class="stat-box-icon">📋</span>
+              <span class="stat-val" id="totalTasksCount">0</span>
+              <span class="stat-lbl">Total Tasks</span>
+            </div>
+            <div class="stat-box pending">
+              <span class="stat-box-icon">⏳</span>
+              <span class="stat-val" id="pendingTasksCount">0</span>
+              <span class="stat-lbl">Pending</span>
+            </div>
+            <div class="stat-box completed">
+              <span class="stat-box-icon">✅</span>
+              <span class="stat-val" id="completedTasksCount">0</span>
+              <span class="stat-lbl">Completed</span>
+            </div>
+          </div>
+          
+          <!-- Animated Progress Bar -->
+          <div class="progress-section">
+            <div class="progress-info">
+              <span>📈 Overall Progress</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Today's Progress Card -->
+        <section class="card progress-detail-card" id="todayProgressCard">
+          <div class="progress-detail-header" id="todayProgressHeader">
+            <h2>📊 Today's Progress</h2>
+            <span class="progress-detail-percent" id="todayProgressPercent">0%</span>
+          </div>
+          
+          <!-- Animated Progress Bar -->
+          <div class="today-progress-bar-container">
+            <div class="today-progress-bar-fill" id="todayProgressBarFill" style="width: 0%"></div>
+          </div>
+          
+          <!-- Collapsible details section -->
+          <div class="progress-details-content collapsed" id="progressDetailsContent">
+            <div class="progress-details-grid">
+              <div class="progress-detail-item">
+                <span class="progress-item-emoji">✅</span>
+                <div class="progress-item-text">
+                  <span class="progress-item-label">Tasks Completed</span>
+                  <span class="progress-item-value" id="todayTasksCompletedText">0 / 0 Completed Today</span>
+                </div>
+              </div>
+              
+              <div class="progress-detail-item">
+                <span class="progress-item-emoji">🔥</span>
+                <div class="progress-item-text">
+                  <span class="progress-item-label">Current Streak</span>
+                  <span class="progress-item-value" id="todayStreakText">3-Day Streak</span>
+                </div>
+              </div>
+              
+              <div class="progress-detail-item">
+                <span class="progress-item-emoji">🎯</span>
+                <div class="progress-item-text">
+                  <span class="progress-item-label">Daily Goal</span>
+                  <span class="progress-item-value" id="todayDailyGoalText">0% Completed</span>
+                </div>
+              </div>
+              
+              <div class="progress-detail-item">
+                <span class="progress-item-emoji">🏆</span>
+                <div class="progress-item-text">
+                  <span class="progress-item-label">Next Level</span>
+                  <span class="progress-item-value" id="todayXpText">120 XP Remaining</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" id="toggleProgressDetailsBtn" class="progress-details-toggle-btn">
+            <span id="toggleProgressText">▼ View Details</span>
+          </button>
+        </section>
+
+        <!-- Task Creator Form Card -->
+        <section class="card form-card" id="formCard">
+          <h2 id="formTitle">Create New Task</h2>
+          <form id="taskForm" autocomplete="off">
+            <!-- Hidden input to store editing task ID -->
+            <input type="hidden" id="editingTaskId" value="">
+            
+            <div class="form-group">
+              <label for="taskName">Task Name</label>
+              <input type="text" id="taskName" required placeholder="e.g. Study for Chemistry Midterm">
+            </div>
+
+            <div class="form-group">
+              <label for="taskDesc">Description</label>
+              <textarea id="taskDesc" rows="3" required placeholder="Detail the steps or materials needed..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="taskDueDate">Due Date</label>
+                <input type="date" id="taskDueDate" required>
+              </div>
+
+              <div class="form-group">
+                <label for="taskPriority">Priority</label>
+                <select id="taskPriority" required>
+                  <option value="Low">Low Priority</option>
+                  <option value="Medium" selected>Medium Priority</option>
+                  <option value="High">High Priority</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="taskTime">Due Time (Optional)</label>
+              <input type="time" id="taskTime">
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="submitBtn" class="btn btn-primary">Save Task</button>
+              <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">Cancel Edit</button>
+            </div>
+          </form>
+        </section>
+        
+        <!-- 3. AI Mentor Card -->
+        <section class="card coach-card" id="coachCard">
+          <div class="coach-header">
+            <span class="coach-icon">🧠</span>
+            <h2>AI Mentor</h2>
+          </div>
+          <p class="coach-intro">Your personal AI mentor for smarter planning, better focus, and productive study sessions.</p>
+          
+          <div class="coach-form">
+            <div class="form-group">
+              <label for="coachTimeLimit">Study Session Duration (Optional)</label>
+              <input type="text" id="coachTimeLimit" placeholder="e.g. 45 mins, 2 hours...">
+            </div>
+            <button type="button" id="getCoachAdviceBtn" class="btn btn-primary btn-coach">
+              <span>Ask AI Mentor</span>
+            </button>
+          </div>
+          
+          <!-- AI Output Response Area -->
+          <div class="coach-response-container hidden" id="coachResponseContainer">
+            <div class="coach-response-header">
+              <span>AI Mentor's Advice</span>
+              <button type="button" class="coach-close-btn" id="hideCoachResponseBtn" title="Clear Advice">&times;</button>
+            </div>
+            <div class="coach-response-content markdown-body" id="coachResponseContent">
+              <!-- Dynamically populated Markdown content -->
+            </div>
+          </div>
+        </section>
+        
+      </aside>
+
+      <!-- Right Panel: Tasks Toolbar & Task Cards List -->
+      <section class="tasks-panel">
+        
+        <!-- Toolbar for Searching and Filtering -->
+        <div class="toolbar-card">
+          <!-- Live Search Bar -->
+          <div class="search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="text" id="searchInput" placeholder="Search tasks by name or description...">
+          </div>
+          
+          <!-- Filter Tabs -->
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all" id="filterAll">All Tasks</button>
+            <button class="filter-tab" data-filter="pending" id="filterPending">Pending</button>
+            <button class="filter-tab" data-filter="completed" id="filterCompleted">Completed</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Task Cards List Grid -->
+        <div class="task-grid" id="taskGrid">
+          <!-- Task cards will be rendered here dynamically via JavaScript -->
+          
+          <!-- State Displayed when Task Grid is Empty -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📂</div>
+            <h3>No tasks found</h3>
+            <p>Create a task on the left or change your filter options to get started!</p>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+    
+    <!-- Footer Section -->
+    <footer class="app-footer">
+      <p>Student Task Manager &bull; Learning Web Development Step-by-Step</p>
+    </footer>
+
+  </div>
+
+  <!-- Name Setup Modal Overlay -->
+  <div id="nameModalOverlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-emoji">👋</div>
+      <h2 class="modal-title">Welcome!</h2>
+      <p class="modal-text">Welcome to Student Task Manager.<br>Before we begin, what should we call you?</p>
+      <div class="modal-input-wrapper">
+        <input type="text" id="modalNameInput" placeholder="Enter your name" maxlength="25">
+        <div class="modal-char-count"><span id="modalCharCount">0</span>/25</div>
+      </div>
+      <button type="button" id="modalContinueBtn" class="btn btn-primary modal-btn" disabled>Continue</button>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Entry Point -->
+  <script src="/script.js" type="module"></script>
+</body>
+</html>

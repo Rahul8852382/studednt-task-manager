@@ -1,0 +1,1631 @@
+/* ==========================================================================
+   STUDENT TASK MANAGER - STYLESHEET
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ROOT VARIABLES (CSS CUSTOM PROPERTIES)
+   These variables act as design tokens for color consistency and easy theming.
+   Adding the '.dark' class to the body overrides these variables to create a dark mode.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Light Mode Color Scheme */
+  --bg-app: #f1f5f9;           /* Soft off-white with a touch of blue-grey */
+  --bg-card: #ffffff;          /* Pure white for distinct cards */
+  --text-primary: #1e293b;     /* Deep charcoal slate for highly legible text */
+  --text-secondary: #64748b;   /* Medium slate for secondary details and helper text */
+  --border-color: #e2e8f0;     /* Subtle light grey for clean borders */
+  
+  /* Primary Brand Accent Colors */
+  --primary-color: #4f46e5;    /* Modern Indigo blue-purple as the main accent */
+  --primary-hover: #4338ca;    /* Darker Indigo for button hover feedback */
+  --accent-color: #10b981;     /* Vibrant Mint Emerald for progress and success elements */
+  --card-glow: rgba(79, 70, 229, 0.08); /* Indigo soft drop shadow */
+  
+  /* Greeting Card Saturated Gradient - Light Mode */
+  --greeting-gradient: linear-gradient(135deg, #4f46e5 0%, #0d9488 100%);
+  
+  /* Status/Priority Colors (Soft backgrounds with high-contrast text) */
+  --priority-low-bg: #e0f2fe;  /* Sky Blue background */
+  --priority-low-txt: #0369a1; /* Deep Sky Blue text */
+  
+  --priority-med-bg: #fef3c7;  /* Warm Amber background */
+  --priority-med-txt: #b45309; /* Deep Amber text */
+  
+  --priority-high-bg: #ffe4e6; /* Soft Crimson Rose background */
+  --priority-high-txt: #be123c;/* Deep Crimson Rose text */
+  
+  --status-complete-bg: #ecfdf5; /* Emerald background */
+  --status-complete-txt: #047857;/* Deep Emerald text */
+
+  /* Global Shadows & Rounded Corners */
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+  
+  /* Smooth transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. DARK MODE OVERRIDES
+   When JavaScript adds the '.dark' class to the body, these colors take effect.
+   -------------------------------------------------------------------------- */
+body.dark {
+  /* Dark Mode Color Scheme */
+  --bg-app: #0f172a;           /* Dark Midnight Slate */
+  --bg-card: #1e293b;          /* Darker blue-grey card background */
+  --text-primary: #f8fafc;     /* Clean off-white for excellent contrast */
+  --text-secondary: #94a3b8;   /* Light Slate for subheadings and comments */
+  --border-color: #334155;     /* Slate border to separate items nicely */
+  
+  /* Brand accents in Dark Mode */
+  --primary-color: #6366f1;    /* Slightly lighter, more vibrant Indigo */
+  --primary-hover: #818cf8;    /* Indigo glow for active hover */
+  --accent-color: #34d399;     /* Brighter emerald green */
+  --card-glow: rgba(99, 102, 241, 0.15); /* More visible dark glow */
+  
+  /* Greeting Card Saturated Gradient - Dark Mode */
+  --greeting-gradient: linear-gradient(135deg, #1e1b4b 0%, #064e3b 100%);
+  
+  /* Keep status badges eye-safe and balanced against dark cards */
+  --priority-low-bg: #0c4a6e;
+  --priority-low-txt: #38bdf8;
+  
+  --priority-med-bg: #78350f;
+  --priority-med-txt: #fbbf24;
+  
+  --priority-high-bg: #4c0519;
+  --priority-high-txt: #fda4af;
+  
+  --status-complete-bg: #064e3b;
+  --status-complete-txt: #34d399;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   3. GLOBAL STYLES & RESET
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base application structure */
+.app-container {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. TYPOGRAPHY & DESIGN ACCENTS
+   -------------------------------------------------------------------------- */
+h1, h2, h3 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Global Card Styling */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast), 
+              box-shadow var(--transition-fast), 
+              background-color var(--transition-normal), 
+              border-color var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg), var(--card-glow);
+}
+
+/* Utility Hidden state */
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. HEADER SECTION
+   -------------------------------------------------------------------------- */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  font-size: 2rem;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.date-badge {
+  background-color: var(--bg-app);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: background-color var(--transition-normal);
+}
+
+/* Theme Toggle Button & SVG swap */
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--border-color);
+}
+
+/* Hide Moon in Light mode, Sun in Dark Mode */
+body:not(.dark) .moon-icon {
+  display: none;
+}
+
+body.dark .sun-icon {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   6. SPLIT-PANE MAIN WORKSPACE
+   Using CSS Grid on Desktop, fallback to flex vertical on mobile.
+   -------------------------------------------------------------------------- */
+.app-main {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.tasks-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. DASHBOARD CARD & STAT BOXES
+   -------------------------------------------------------------------------- */
+.dashboard-card h2 {
+  font-size: 1.35rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.75rem;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 0.6rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.stat-box:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-md), var(--card-glow);
+}
+
+.stat-box-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.stat-box:hover .stat-box-icon {
+  transform: scale(1.2) rotate(6deg);
+}
+
+.stat-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.stat-lbl {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
+/* Highlighting particular metrics with brand colors */
+.stat-box.total .stat-val { color: var(--primary-color); }
+.stat-box.pending .stat-val { color: #f97316; } /* Better high-visibility orange */
+.stat-box.completed .stat-val { color: var(--accent-color); }
+
+/* Progress Bar Container & Fluid Fill */
+.progress-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  align-items: center;
+}
+
+.progress-info span:last-child {
+  color: var(--accent-color);
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 14px;
+  background-color: var(--bg-app);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: background-color var(--transition-normal);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 99px;
+  width: 0%; /* Dynamic size based on task completion percentage */
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   8. INPUTS, TEXTAREAS & BUTTON SYSTEM
+   -------------------------------------------------------------------------- */
+.form-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+}
+
+/* Input Fields and Interactive Focus Bounds */
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: var(--transition-fast);
+  outline: none;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  background-color: var(--bg-card);
+}
+
+/* Button Classes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.btn:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -3px rgba(79, 70, 229, 0.35);
+}
+
+.btn-primary:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-app);
+  border-color: var(--text-secondary);
+}
+
+.btn-secondary:active {
+  transform: scale(0.96);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   9. TOOLBAR (SEARCH & FILTERS)
+   -------------------------------------------------------------------------- */
+.toolbar-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+@media (min-width: 850px) {
+  .toolbar-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Search Box Container */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 100%;
+}
+
+@media (min-width: 850px) {
+  .search-wrapper {
+    max-width: 380px;
+  }
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+#searchInput {
+  padding-left: 2.75rem; /* Push text to the right to clear room for the icon */
+}
+
+/* Filters Tabs list styling */
+.filter-tabs {
+  display: flex;
+  background-color: var(--bg-app);
+  padding: 0.35rem;
+  border-radius: var(--radius-md);
+  gap: 0.25rem;
+  align-self: flex-start;
+  transition: background-color var(--transition-normal);
+}
+
+.filter-tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.filter-tab:hover {
+  color: var(--text-primary);
+}
+
+.filter-tab.active {
+  background-color: var(--bg-card);
+  color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   10. TASK GRID & DYNAMIC CARD RENDERING
+   -------------------------------------------------------------------------- */
+.task-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 950px) {
+  .task-grid {
+    grid-template-columns: repeat(2, 1fr); /* Split into two columns for roomier view */
+  }
+}
+
+/* Task Card Style */
+.task-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 225px;
+  border-left: 6px solid var(--border-color); /* Premium thicker colored edge representing priority */
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--transition-fast), 
+              box-shadow var(--transition-fast), 
+              background-color var(--transition-normal), 
+              border-color var(--transition-normal),
+              opacity var(--transition-normal);
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), var(--card-glow);
+}
+
+/* Slide in animation for dynamically generated elements */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Edge colors correlating to priority classes with professional accent shades */
+.task-card.priority-low { border-left-color: #10b981; } /* Premium Green Accent */
+.task-card.priority-medium { border-left-color: #f97316; } /* Premium Orange Accent */
+.task-card.priority-high { border-left-color: #ef4444; } /* Premium Red Accent */
+
+/* Completed task muted look with smooth transition and scale */
+.task-card.is-completed {
+  opacity: 0.65;
+  border-left-color: var(--accent-color);
+  background-color: rgba(var(--bg-card), 0.85);
+  transform: translateY(0) scale(0.98);
+}
+
+.task-card.is-completed:hover {
+  opacity: 0.8;
+  transform: translateY(-1px) scale(0.99);
+}
+
+.task-card.is-completed .task-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+  opacity: 0.75;
+}
+
+/* Card Header Section (Title + Badges) */
+.task-card-header {
+  margin-bottom: 0.85rem;
+}
+
+.task-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+/* General pill-style badge */
+.badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-sm);
+}
+
+.badge.p-low { background-color: var(--status-complete-bg); color: var(--status-complete-txt); }
+.badge.p-medium { background-color: var(--priority-med-bg); color: var(--priority-med-txt); }
+.badge.p-high { background-color: var(--priority-high-bg); color: var(--priority-high-txt); }
+
+.badge.status-complete { background-color: var(--status-complete-bg); color: var(--status-complete-txt); }
+.badge.status-pending { background-color: var(--priority-high-bg); color: var(--priority-high-txt); }
+
+.task-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+/* Card Body Section (Description & Date) */
+.task-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.15rem;
+  margin-bottom: 1.35rem;
+}
+
+.task-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  word-break: break-word;
+  line-height: 1.45;
+}
+
+.task-meta-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.task-due-date, .task-due-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.detail-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Card Footer Action Buttons */
+.task-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.15rem;
+}
+
+.task-card-actions button {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.task-card-actions button:active {
+  transform: scale(0.94);
+}
+
+/* Distinct Action Button colors on hover */
+.task-card-actions .btn-complete-task {
+  border-color: var(--border-color);
+}
+
+.task-card-actions .btn-complete-task:hover {
+  background-color: var(--status-complete-bg);
+  border-color: var(--accent-color);
+  color: var(--status-complete-txt);
+}
+
+.task-card-actions .btn-edit-task:hover {
+  background-color: var(--priority-low-bg);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.task-card-actions .btn-delete-task:hover {
+  background-color: var(--priority-high-bg);
+  border-color: var(--priority-high-txt);
+  color: var(--priority-high-txt);
+}
+
+/* Styled checkbox state in completed buttons */
+.task-card.is-completed .btn-complete-task {
+  background-color: var(--status-complete-bg);
+  border-color: var(--accent-color);
+  color: var(--status-complete-txt);
+}
+
+/* --------------------------------------------------------------------------
+   11. EMPTY & EMPTY SEARCH STATES
+   -------------------------------------------------------------------------- */
+.empty-state {
+  grid-column: 1 / -1; /* Stretch across all columns */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+}
+
+/* --------------------------------------------------------------------------
+   12. GLOBAL FOOTER
+   -------------------------------------------------------------------------- */
+.app-footer {
+  text-align: center;
+  margin-top: auto; /* Push footer to the very bottom */
+  padding: 1.5rem 0 0.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   14. AI PRODUCTIVITY COACH CARD
+   -------------------------------------------------------------------------- */
+.coach-card {
+  border-top: 5px solid var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.coach-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coach-icon {
+  font-size: 1.5rem;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 1px var(--primary-color)); }
+  to { filter: drop-shadow(0 0 8px var(--primary-color)); }
+}
+
+.coach-card h2 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.coach-intro {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.btn-coach {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+.btn-coach:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent-color)) !important;
+  transform: translateY(-1px);
+}
+
+.btn-coach:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Coach Response Container */
+.coach-response-container {
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.coach-response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: var(--border-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+.coach-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+
+.coach-close-btn:hover {
+  color: var(--priority-high-txt);
+}
+
+.coach-response-content {
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  max-height: 380px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+/* Simple Markdown classes styled beautifully */
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  color: var(--primary-color);
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.markdown-body ul, .markdown-body ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body li {
+  margin-bottom: 0.35rem;
+}
+
+.markdown-body p {
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.markdown-body br {
+  margin-bottom: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   15. PREMIUM SMART GREETING CARD
+   -------------------------------------------------------------------------- */
+.greeting-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 2.25rem 2rem;
+  background: var(--greeting-gradient);
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.16);
+  animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
+  transition: transform var(--transition-normal), box-shadow var(--transition-fast);
+}
+
+.greeting-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(79, 70, 229, 0.22);
+}
+
+@media (min-width: 768px) {
+  .greeting-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.greeting-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.greeting-header-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.greeting-badge {
+  font-size: 2.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.greeting-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.profile-area {
+  display: flex;
+  align-items: center;
+}
+
+.profile-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.profile-welcome {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-set-name {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-fast);
+}
+
+.btn-set-name:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-set-name:active {
+  transform: scale(0.95);
+}
+
+.profile-edit-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.profile-edit-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.profile-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-input-group input {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  outline: none;
+  width: 170px;
+  backdrop-filter: blur(4px);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.profile-input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.profile-input-group input:focus {
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.profile-btn.save {
+  background-color: #ffffff;
+  color: var(--primary-color);
+}
+
+.profile-btn.save:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+.profile-btn.cancel {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.profile-btn.cancel:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Premium Motivational Card design */
+.motivational-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  padding: 1.25rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  max-width: 100%;
+  color: #ffffff;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal), transform var(--transition-fast);
+}
+
+.motivational-card:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 768px) {
+  .motivational-card {
+    max-width: 380px;
+    align-self: center;
+  }
+}
+
+.motivation-icon-badge {
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.6rem;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.motivation-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.motivation-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.motivation-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. RESPONSIVE MEDIA QUERIES
+   Adapts grid structure on mobile and smaller tablets.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .app-main {
+    grid-template-columns: 1fr; /* Stack sidebar and tasks vertically */
+  }
+  
+  .sidebar-panel {
+    position: static; /* Clear sticky behaviour on stacked view */
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem;
+  }
+  
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .header-logo {
+    justify-content: center;
+  }
+  
+  .header-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .date-badge {
+    text-align: center;
+  }
+  
+  .theme-toggle-btn {
+    align-self: center;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr; /* Stack due date and priority vertically on tiny screens */
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr; /* Stack stats boxes vertically on mobile */
+  }
+  
+  .toolbar-card {
+    padding: 1rem;
+  }
+  
+  .filter-tabs {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .filter-tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================================================================
+   14. WELCOME MODAL SYSTEM & INLINE EDIT
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.75); /* Dark slate semi-transparent overlay */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
+.modal-overlay.hidden {
+  display: none !important;
+}
+
+.modal-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  width: 90%;
+  max-width: 440px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(79, 70, 229, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transform: scale(1);
+  animation: modalScaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.fade-out .modal-card {
+  transform: scale(0.9) translateY(-10px);
+}
+
+.modal-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+  animation: waveEmoji 1.5s infinite ease-in-out;
+  transform-origin: 70% 70%;
+}
+
+@keyframes waveEmoji {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+.modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.modal-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.modal-input-wrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-input-wrapper input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modal-input-wrapper input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+.modal-char-count {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 0.25rem;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 0.95rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-lg);
+}
+
+.modal-btn:disabled {
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+}
+
+.edit-name-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.8;
+}
+
+.edit-name-icon-btn:hover {
+  transform: scale(1.2) rotate(15deg);
+  opacity: 1;
+}
+
+.edit-name-icon-btn:active {
+  transform: scale(0.9);
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==========================================================================
+   15. TODAY'S PROGRESS CARD STYLES
+   ========================================================================== */
+.progress-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: all var(--transition-normal);
+}
+
+.progress-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-detail-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-detail-percent {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+/* Today Progress Bar styles */
+.today-progress-bar-container {
+  width: 100%;
+  height: 12px;
+  background-color: var(--bg-app);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+}
+
+.today-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(79, 70, 229, 0.4);
+}
+
+/* Collapsible content pane */
+.progress-details-content {
+  width: 100%;
+  max-height: 500px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.3s ease, 
+              padding-top 0.4s ease, 
+              margin-top 0.4s ease,
+              border-top-color 0.4s ease;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.progress-details-content.collapsed {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  border-top-color: transparent !important;
+  pointer-events: none;
+}
+
+/* Progress Details Items Grid */
+.progress-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.progress-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.1rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.progress-detail-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md), var(--card-glow);
+  background-color: var(--bg-card);
+}
+
+.progress-item-emoji {
+  font-size: 1.65rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+}
+
+.progress-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.progress-item-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.progress-item-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* View/Hide Toggle Button */
+.progress-details-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.6rem;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.progress-details-toggle-btn:hover {
+  background-color: rgba(79, 70, 229, 0.08);
+  color: var(--primary-hover);
+}
+
+.progress-details-toggle-btn:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 480px) {
+  .progress-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
