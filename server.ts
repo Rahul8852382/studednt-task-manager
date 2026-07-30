@@ -75,7 +75,7 @@ Please analyze these tasks, recommend what to prioritize first, draft a structur
 
     // Generate the content from Gemini 3.5 Flash (best for basic text & reasoning tasks)
    const response = await ai.models.generateContent({
-  model: "gemini-3.5-flash",
+  model: "gemini-3.1-flash",
   contents: prompt,
   config: {
     systemInstruction,
